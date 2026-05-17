@@ -1,0 +1,79 @@
+version: "3.8"
+
+services:
+  # --- MQTT BROKER (Transport Layer) ---
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: iothings_broker
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+    networks:
+      - iothings_network
+
+  # --- EDGE SIMULATION (Sensor Layer) ---
+  node-red:
+    image: nodered/node-red:latest
+    container_name: iothings_edge_sim
+    ports:
+      - "1880:1880"
+    environment:
+      - TZ=Europe/London
+    volumes:
+      - node_red_data:/data
+    networks:
+      - iothings_network
+    depends_on:
+      - mosquitto
+
+  # --- MONGODB THREE-CLUSTER (Storage Layer) ---
+  mongo1:
+    image: mongo:6.0
+    container_name: iothings_mongo_1
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27018"]
+    ports:
+      - "27018:27018"
+    networks:
+      - iothings_network
+
+  mongo2:
+    image: mongo:6.0
+    container_name: iothings_mongo_2
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27019"]
+    ports:
+      - "27019:27019"
+    networks:
+      - iothings_network
+
+  mongo3:
+    image: mongo:6.0
+    container_name: iothings_mongo_3
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27020"]
+    ports:
+      - "27020:27020"
+    networks:
+      - iothings_network
+
+  # --- DB GUI ---
+  mongo-express:
+    image: mongo-express
+    container_name: iothings_db_viewer
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_URL=mongodb://mongo1:27018,mongo2:27019,mongo3:27020/?replicaSet=rs0
+      - ME_CONFIG_BASICAUTH_USERNAME=iot_admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=iot_pass
+    networks:
+      - iothings_network
+    depends_on:
+      - mongo1
+
+networks:
+  iothings_network:
+    driver: bridge
+
+volumes:
+  node_red_data:

@@ -1,0 +1,35 @@
+{
+  "name": "iot-smart-home-simulation",
+  "version": "1.0.0",
+  "description": "IoT Smart Home Simulation using Node.js, MQTT, Socket.IO, and Node-RED integration",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"No tests configured yet\""
+  },
+  "keywords": [
+    "iot",
+    "smart-home",
+    "mqtt",
+    "node-red",
+    "dashboard",
+    "simulation",
+    "socketio",
+    "sensors"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.6.2",
+    "morgan": "^1.10.1",
+    "mqtt": "^5.15.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
