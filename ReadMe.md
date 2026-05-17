@@ -1,6 +1,6 @@
 # IoThings Home Automation Core: NoSQL Infrastructure
 
-<p align="center"> <img src="https://skillicons.dev/icons?i=nodejs,mongodb,docker,express,npm,linux" /> </p> <p align="center"> <img src="https://img.shields.io/badge/Node--RED-Dashboard%202.0-red?style=for-the-badge&logo=nodered" /> <img src="https://img.shields.io/badge/MQTT-Mosquitto-blue?style=for-the-badge" /> <img src="https://img.shields.io/badge/MongoDB-Replica%20Set-green?style=for-the-badge&logo=mongodb" /> <img src="https://img.shields.io/badge/Express.js-Backend-black?style=for-the-badge&logo=express" /> </p>
+<p align="center"> <img src="https://skillicons.dev/icons?i=nodejs,mongodb,docker,express,npm,mosquitto" /> </p> <p align="center"> <img src="https://img.shields.io/badge/Node--RED-Dashboard%202.0-red?style=for-the-badge&logo=nodered" /> <img src="https://img.shields.io/badge/MQTT-Mosquitto-blue?style=for-the-badge" /> <img src="https://img.shields.io/badge/MongoDB-Replica%20Set-green?style=for-the-badge&logo=mongodb" /> <img src="https://img.shields.io/badge/Express.js-Backend-black?style=for-the-badge&logo=express" /> </p>
 
 ## Project Overview
 
