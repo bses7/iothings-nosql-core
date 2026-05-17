@@ -1,6 +1,6 @@
 # IoThings Home Automation Core: NoSQL Infrastructure
 
-<p align="center"> <img src="https://skillicons.dev/icons?i=nodejs,mongodb,docker,express,npm,mosquitto" /> </p> <p align="center"> <img src="https://img.shields.io/badge/Node--RED-Dashboard%202.0-red?style=for-the-badge&logo=nodered" /> <img src="https://img.shields.io/badge/MQTT-Mosquitto-blue?style=for-the-badge" /> <img src="https://img.shields.io/badge/MongoDB-Replica%20Set-green?style=for-the-badge&logo=mongodb" /> <img src="https://img.shields.io/badge/Express.js-Backend-black?style=for-the-badge&logo=express" /> </p>
+<p align="center"> <img src="https://skillicons.dev/icons?i=nodejs,mongodb,docker,express,npm,linux" /> </p> <p align="center"> <img src="https://img.shields.io/badge/Node--RED-Dashboard%202.0-red?style=for-the-badge&logo=nodered" /> <img src="https://img.shields.io/badge/MQTT-Mosquitto-blue?style=for-the-badge" /> <img src="https://img.shields.io/badge/MongoDB-Replica%20Set-green?style=for-the-badge&logo=mongodb" /> <img src="https://img.shields.io/badge/Express.js-Backend-black?style=for-the-badge&logo=express" /> </p>
 
 ## Project Overview
 
@@ -36,6 +36,23 @@ To resolve the cluster nodes correctly from your host machine, add the following
    npm install
    npm run dev
    ```
+
+## Edge Simulation Setup (Node-RED)
+
+To establish the sensor environment and user interface, follow these steps:
+
+1. **Access Node-RED:** Open your browser and navigate to `http://localhost:1880`.
+2. **Install Dependencies:**
+   - Click the **Menu** (top right) > **Manage Palette**.
+   - Go to the **Install** tab and search for `@flowfuse/node-red-dashboard`.
+   - Click **Install**.
+3. **Import Flow:**
+   - Click **Menu** > **Import**.
+   - Select the `home-automation.json` file from the `/simulation` folder or paste its contents.
+   - Click **Import**.
+4. **Deploy:** Click the red **Deploy** button in the top right corner.
+5. **View Dashboard:** Access the professional home automation interface at:
+   - **`http://localhost:1880/dashboard`**
 
 ## API Documentation
 
