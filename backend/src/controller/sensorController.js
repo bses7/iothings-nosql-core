@@ -58,12 +58,10 @@ export const deleteOldLogs = async (req, res) => {
 
 export const getClusterStatus = async (req, res) => {
   try {
-    // This command asks MongoDB for the internal Replica Set status
     const status = await mongoose.connection.db
       .admin()
       .command({ replSetGetStatus: 1 });
 
-    // Clean up the response for a professional API view
     const clusterInfo = {
       set: status.set,
       date: status.date,
@@ -77,6 +75,105 @@ export const getClusterStatus = async (req, res) => {
     };
 
     res.status(200).json({ success: true, cluster: clusterInfo });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+export const createLog = async (req, res) => {
+  try {
+    const newLog = new SensorData(req.body);
+    await newLog.save();
+    res.status(201).json({ success: true, data: newLog });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+};
+
+export const updateLogStatus = async (req, res) => {
+  try {
+    const log = await SensorData.findByIdAndUpdate(
+      req.params.id,
+      { status: req.body.status },
+      { new: true },
+    );
+    res.status(200).json({ success: true, data: log });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+};
+
+export const deleteLog = async (req, res) => {
+  try {
+    await SensorData.findByIdAndDelete(req.params.id);
+    res
+      .status(200)
+      .json({ success: true, message: "Log deleted successfully" });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+};
+
+export const getDashboardSummary = async (req, res) => {
+  try {
+    const summary = await SensorData.aggregate([
+      { $sort: { timestamp: -1 } },
+      {
+        $group: {
+          _id: "$deviceId",
+          latestTimestamp: { $first: "$timestamp" },
+          room: { $first: "$room" },
+          sensor: { $first: "$sensor" },
+          type: { $first: "$type" },
+          value: { $first: "$value" },
+          status: { $first: "$status" },
+        },
+      },
+      { $sort: { room: 1 } },
+    ]);
+
+    res.status(200).json({ success: true, data: summary });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+export const getHouseAnalytics = async (req, res) => {
+  try {
+    const analytics = await SensorData.aggregate([
+      {
+        $facet: {
+          safetyAlertsByRoom: [
+            { $match: { type: "safety" } },
+            { $group: { _id: "$room", count: { $sum: 1 } } },
+            { $sort: { count: -1 } },
+          ],
+          environmentalAverages: [
+            {
+              $match: {
+                type: "environmental",
+                sensor: { $in: ["temperature", "humidity"] },
+              },
+            },
+            {
+              $group: {
+                _id: "$sensor",
+                avgValue: { $avg: "$value" },
+                min: { $min: "$value" },
+                max: { $max: "$value" },
+              },
+            },
+          ],
+          topActuators: [
+            { $match: { type: "actuator" } },
+            { $group: { _id: "$sensor", activations: { $sum: 1 } } },
+            { $sort: { activations: -1 } },
+          ],
+        },
+      },
+    ]);
+
+    res.status(200).json({ success: true, data: analytics[0] });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

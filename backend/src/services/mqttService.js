@@ -3,7 +3,7 @@ import SensorData from "../models/SensorData.js";
 import "dotenv/config";
 
 const THRESHOLDS = {
-  temperature: 30,
+  temperature: 28,
   humidity: 85,
   aqi: 80,
   energy: 2000,
